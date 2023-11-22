@@ -3,7 +3,12 @@ from db.controlador import obtenerClientes, insertarCliente, obtener_cliente_por
 from flask import request
 
 
+
+
 app = Flask(__name__)
+app.config['CARPETA_FOTOS'] = 'static/fotos'
+
+
 
 @app.route('/')
 def mostrar_clientes():
@@ -15,6 +20,7 @@ def mostrar_clientes():
 
 @app.route('/agregar_cliente', methods=['GET', 'POST'])
 def agregar_cliente():
+    resultado = None
     if request.method == 'POST':
         # Obtener datos del formulario
         cedula = request.form.get('cedula')
@@ -26,6 +32,7 @@ def agregar_cliente():
         foto = request.files['foto']
         tipo_membresia = request.form.get('tipo_membresia')
         fecha_inicio_membresia = request.form.get('fecha_inicio_membresia')
+        
         resultado = insertarCliente(cedula, nombre, apellido, correo, telefono, foto, tipo_membresia, fecha_inicio_membresia)
         return redirect(url_for('mostrar_clientes'))
     return render_template('agregar.html')

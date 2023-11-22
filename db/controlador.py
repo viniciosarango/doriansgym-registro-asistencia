@@ -1,5 +1,8 @@
+from flask import current_app
 import pymysql
 from db.database import obtener_conexion
+import os
+
 
 def obtenerClientes():
     try:
@@ -106,13 +109,16 @@ def obtener_asistencias_diarias_cliente(id_cliente):
     return []
 
 
-
-
 def insertarCliente(cedula, nombre, apellido, correo, telefono, foto, tipo_membresia, fecha_inicio_membresia):
     try:
         conexion = obtener_conexion()
         if conexion:
             cursor = conexion.cursor()
+
+            # Guardar la foto en la carpeta de fotos
+            cedula_str = str(cedula)  # Convertir cédula a cadena
+            foto_path = os.path.join(current_app.config['CARPETA_FOTOS'], f"{cedula_str}.jpg")
+            guardar_imagen_en_sistema(cedula_str, foto)
 
             # Parámetros del procedimiento almacenado
             argumentos = [
@@ -121,7 +127,7 @@ def insertarCliente(cedula, nombre, apellido, correo, telefono, foto, tipo_membr
                 apellido,
                 correo,
                 telefono,
-                foto.read(),
+                foto_path,  # Guardamos la ruta de la foto en lugar de su contenido
                 tipo_membresia,
                 fecha_inicio_membresia
             ]
@@ -141,3 +147,18 @@ def insertarCliente(cedula, nombre, apellido, correo, telefono, foto, tipo_membr
     except pymysql.Error as error:
         print(f"Error al ejecutar la consulta: {error}")
         return None
+
+
+
+
+
+def guardar_imagen_en_sistema(cedula, foto):
+    # Asegúrate de que la carpeta exista
+    carpeta_fotos = os.path.join(os.getcwd(), 'static', 'fotos')
+    if not os.path.exists(carpeta_fotos):
+        os.makedirs(carpeta_fotos)
+
+    # Guarda la imagen en la carpeta
+    ruta_imagen = os.path.join(carpeta_fotos, f"{cedula}.jpg")
+    with open(ruta_imagen, 'wb') as archivo:
+        archivo.write(foto.read())
