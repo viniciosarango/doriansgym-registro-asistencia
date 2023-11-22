@@ -1,0 +1,40 @@
+{% extends "maestra.html" %}
+{% block titulo %}
+Agregar Cliente
+{% endblock %}
+{% block contenido %}
+<section class="section">
+    <div class="columns">
+        <div class="column is-one-third">
+            <h3 class="is-size-3">Agregar Cliente</h3>
+            <form action="{{url_for('agregar_cliente')}}" method="post" enctype="multipart/form-data">
+                <label for="cedula">Cédula:</label>
+                <input required type="text" class="input" placeholder="Cédula" name="cedula" id="cedula">
+                <label for="nombre">Nombre:</label>
+                <input required type="text" class="input" placeholder="Nombre" name="nombre" id="nombre">
+                <label for="apellido">Apellido:</label>
+                <input required type="text" class="input" placeholder="Apellido" name="apellido" id="apellido">
+                <label for="correo">Correo:</label>
+                <input required type="email" class="input" placeholder="Correo" name="correo" id="correo">
+                <label for="telefono">Teléfono:</label>
+                <input required type="tel" class="input" placeholder="Teléfono" name="telefono" id="telefono">
+                <br><br>
+                <label for="foto">Cargar foto:</label>
+                <input required type="file" name="foto" id="foto">
+                <br><br>
+                <label for="tipo_membresia">Tipo de membresía:</label>
+                <select required name="tipo_membresia" id="tipo_membresia" class="input">
+                    <option value="mensual">Mensual</option>
+                    <option value="trimestral">Trimestral</option>
+                    <option value="semestral">Semestral</option>
+                    <option value="anual">Anual</option>
+                </select>
+                <label for="fecha_inicio_membresia">Fecha de inicio de membresía:</label>
+                <input required type="date" class="input" name="fecha_inicio_membresia" id="fecha_inicio_membresia">
+                <button type="submit" class="button is-success mt-2">Guardar</button>
+                <a href="{{url_for('mostrar_clientes')}}" class="button is-primary mt-2">Volver</a>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

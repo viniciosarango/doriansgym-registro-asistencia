@@ -1,0 +1,30 @@
+{% extends 'maestra.html' %}
+
+{% block titulo %}
+    Asistencias Diarias del Cliente
+{% endblock %}
+
+{% block contenido %}
+    <section class="section">
+        <h3 class="is-size-3">Asistencias Diarias del Cliente</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID Asistencia</th>
+                    <th>Fecha</th>
+                    <!-- Otros campos relevantes de la asistencia diaria -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for asistencia in asistencias_diarias_cliente %}
+                    <tr>
+                        <td>{{ asistencia.idAsistencia }}</td>
+                        <td>{{ asistencia.fecha }}</td>
+                        <!-- Otros campos relevantes de la asistencia diaria -->
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

@@ -1,0 +1,41 @@
+<!-- En registro_asistencias_diarias.html -->
+{% extends 'maestra.html' %}
+
+{% block titulo %}
+    Registro de Asistencias Diarias
+{% endblock %}
+
+{% block contenido %}
+    <section class="section">
+        <h3 class="is-size-3">Registro de Asistencias Diarias</h3>
+
+        <div class="table-container">
+            <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Fecha de Asistencia</th>
+                        <th>Acciones</th>  <!-- Nueva columna para el enlace -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for asistencia in asistencias_diarias %}
+                        <tr>
+                            <td>{{ asistencia[0] }}</td>
+                            <td>{{ asistencia[1] }}</td>                          
+                            <td>{{ asistencia[2] }}</td>
+                            <td>{{ asistencia[3] }}</td>
+                            <td>
+                                <form method="get" action="{{ url_for('mostrar_datos_cliente_id', idCliente=asistencia[0]) }}">
+                                    <button type="submit" class="button is-link">Ver Detalles</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{% endblock %}

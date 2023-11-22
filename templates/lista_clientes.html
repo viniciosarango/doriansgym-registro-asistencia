@@ -1,0 +1,51 @@
+{% extends 'maestra.html' %}
+
+{% block titulo %}
+    Lista de Clientes
+{% endblock %}
+
+{% block contenido %}
+<section class="section">
+    <div class="columns">
+        <div class="column">
+            <h3 class="is-size-3">Clientes</h3>
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cédula</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>                        
+                        <th>Fecha Inicio Membresía</th>
+                        <th>Fecha Fin Membresía</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente[0] }}</td>
+                        <td>{{ cliente[1] }}</td>
+                        <td>{{ cliente[2] }}</td>
+                        <td>{{ cliente[3] }}</td>
+                        <td>{{ cliente[4] }}</td>                        
+                        <td>{{ cliente[5] }}</td>
+                        <td>{{ cliente[6] }}</td>
+                        <td>
+                        <a href="{{ url_for('registro_asistencias_diarias_cliente', id_cliente=cliente.idCliente) }}" class="button is-info">Ver Asistencias Diarias</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock %}
