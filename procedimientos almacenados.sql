@@ -41,12 +41,11 @@ BEGIN
             ELSE SET fecha_fin_membresia_nueva = fecha_inicio_membresia_nueva;
         END CASE;
 
-        -- Imprimir valores antes de la actualización
-        SELECT 'Antes de la actualización' AS Etiqueta,
-               nombre, apellido, correo, telefono, fotoCliente,
-               (SELECT tipoMembresia FROM Membresias WHERE idCliente = id_cliente_existente) AS tipo_membresia_actual,
-               (SELECT fechaInicioMembresia FROM Membresias WHERE idCliente = id_cliente_existente) AS fecha_inicio_actual,
-               (SELECT fechaFinMembresia FROM Membresias WHERE idCliente = id_cliente_existente) AS fecha_fin_actual;
+        -- Imprimir valores antes de la actualización en la tabla Cliente
+        SELECT 'Antes de la actualización en Cliente' AS Etiqueta,
+               fechaInicioMembresia, fechaFinMembresia
+        FROM Cliente
+        WHERE idCliente = id_cliente_existente;
 
         -- Actualizar los datos del cliente
         UPDATE Cliente
@@ -55,8 +54,16 @@ BEGIN
             apellido = apellido_cliente,
             correo = correo_cliente,
             telefono = telefono_cliente,
-            fotoCliente = foto_cliente
+            fotoCliente = foto_cliente,
+            fechaInicioMembresia = fecha_inicio_membresia_nueva,
+            fechaFinMembresia = fecha_fin_membresia_nueva
         WHERE cedula = cedula_cliente;
+
+        -- Imprimir valores después de la actualización en la tabla Cliente
+        SELECT 'Después de la actualización en Cliente' AS Etiqueta,
+               fechaInicioMembresia, fechaFinMembresia
+        FROM Cliente
+        WHERE idCliente = id_cliente_existente;
 
         -- Actualizar el tipo de membresía en la tabla Membresias si se proporciona
         IF tipo_membresia_nuevo IS NOT NULL THEN
@@ -74,26 +81,38 @@ BEGIN
             WHERE idCliente = id_cliente_existente;
         END IF;
 
-        -- Imprimir valores después de la actualización
-        SELECT 'Después de la actualización' AS Etiqueta,
-               nombre, apellido, correo, telefono, fotoCliente,
-               (SELECT tipoMembresia FROM Membresias WHERE idCliente = id_cliente_existente) AS tipo_membresia_actual,
-               (SELECT fechaInicioMembresia FROM Membresias WHERE idCliente = id_cliente_existente) AS fecha_inicio_actual,
-               (SELECT fechaFinMembresia FROM Membresias WHERE idCliente = id_cliente_existente) AS fecha_fin_actual;
-
     END IF;
 
 END //
+
 DELIMITER ;
+
+DROP PROCEDURE IF EXISTS obtener_historial_asistencias_cliente;
+delimiter //
+CREATE PROCEDURE obtener_historial_asistencias_cliente(IN id_cliente INT)
+BEGIN
+    SELECT idRegistro, fechaAsistencia FROM registroasistencia
+    WHERE idCliente = id_cliente
+    AND fechaAsistencia BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE();
+END //
+DELIMITER ;
+
+call obtener_historial_asistencias_cliente (9);
+
+
+
+
+
 
 CALL actualizar_cliente_cedula(
     '1103426258',
-    'Pepe Sano',
-    'Losano Quexada',
-    'email4@mail.com',
+    'Pepe Enfermo',
+    'Losano Macas',
+    'email222@mail.com',
     '1235555890',
     NULL,  -- Puedes pasar NULL si no deseas actualizar la foto
     'semestral',  -- Puedes pasar NULL si no deseas actualizar el tipo de membresía
-    '2023-11-05'  -- Puedes pasar NULL si no deseas actualizar la fecha de inicio de membresía
+    '2023-11-08'  -- Puedes pasar NULL si no deseas actualizar la fecha de inicio de membresía
 );
+
 

@@ -106,10 +106,13 @@ def registro_asistencias_diarias():
 @app.route('/registro_asistencias_diarias_cliente/<id_cliente>')
 def registro_asistencias_diarias_cliente(id_cliente):
     # Lógica para obtener las asistencias diarias de un cliente específico
-    asistencias_diarias_cliente = obtener_asistencias_diarias_cliente(id_cliente)
+    historial_asistencias_cliente = obtener_asistencias_diarias_cliente(id_cliente)
+
+    # Obtener información del cliente
+    cliente = obtener_cliente_por_id(id_cliente)
 
     # Renderizar la plantilla con las asistencias diarias del cliente
-    return render_template('registro_asistencias_diarias_cliente.html', asistencias_diarias_cliente=asistencias_diarias_cliente)
+    return render_template('registro_asistencias_diarias_cliente.html', historial_asistencias_cliente=historial_asistencias_cliente, cliente=cliente)
 
 
 

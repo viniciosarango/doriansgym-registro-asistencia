@@ -1,30 +1,34 @@
 {% extends 'maestra.html' %}
 
 {% block titulo %}
-    Asistencias Diarias del Cliente
+    Asistencias Diarias del Cliente: {{ cliente[2] }} {{ cliente[3] }}
 {% endblock %}
 
 {% block contenido %}
     <section class="section">
-        <h3 class="is-size-3">Asistencias Diarias del Cliente</h3>
+        <h3 class="is-size-3">Asistencias Diarias del Cliente: {{ cliente[2] }} {{ cliente[3] }}</h3>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID Asistencia</th>
-                    <th>Fecha</th>
-                    <!-- Otros campos relevantes de la asistencia diaria -->
-                </tr>
-            </thead>
-            <tbody>
-                {% for asistencia in asistencias_diarias_cliente %}
-                    <tr>
-                        <td>{{ asistencia.idAsistencia }}</td>
-                        <td>{{ asistencia.fecha }}</td>
-                        <!-- Otros campos relevantes de la asistencia diaria -->
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% if historial_asistencias_cliente is defined %}
+            <div class="table-container">
+                <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for asistencia in historial_asistencias_cliente %}
+                            <tr>
+                                <td>{{ asistencia[0] }}</td>
+                                <td>{{ asistencia[1] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p>Asistencias diarias del cliente no definidas.</p>
+        {% endif %}
     </section>
 {% endblock %}

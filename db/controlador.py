@@ -2,6 +2,7 @@ from flask import current_app
 import pymysql
 from db.database import obtener_conexion
 import os
+from flask import render_template
 
 
 def obtenerClientes():
@@ -136,22 +137,38 @@ def obtener_asistencias_diarias():
     return []
 
 
-
-
 def obtener_asistencias_diarias_cliente(id_cliente):
-    
     try:
         conexion = obtener_conexion()
-        if conexion is not None:
-            with conexion.cursor() as cursor:
-                cursor.execute("SELECT fechaAsistencia FROM registroasistencia WHERE idCliente = %s AND fechaAsistencia = CURDATE()", (id_cliente,))
-                asistencias_diarias_cliente = cursor.fetchall()
-                conexion.close()
-                return asistencias_diarias_cliente
+
+        # Verificar que la conexión se haya establecido correctamente
+        if conexion is None:
+            print("Error: No se pudo establecer la conexión a la base de datos.")
+            return []
+
+        with conexion.cursor() as cursor:
+            # Realizar operaciones con el cursor
+            cursor.callproc("obtener_historial_asistencias_cliente", [id_cliente])
+            historial_asistencias_cliente = cursor.fetchall()
+
+            # Agregar impresión para verificar los resultados
+            print(historial_asistencias_cliente)
+
+        # Cerrar la conexión después de usarla
+        conexion.close()
+
+        return historial_asistencias_cliente
+
     except pymysql.Error as error:
         print(f"Error al ejecutar la consulta: {error}")
 
     return []
+
+
+def registro_asistencias_diarias_cliente(id_cliente):
+    historial_asistencias_cliente = obtener_asistencias_diarias_cliente(id_cliente)
+    return render_template('registro_asistencias_diarias_cliente.html', historial_asistencias_cliente=historial_asistencias_cliente or [])
+
 
 
 def insertarCliente(cedula, nombre, apellido, correo, telefono, foto, tipo_membresia, fecha_inicio_membresia):
