@@ -1,0 +1,83 @@
+{% extends 'maestra.html' %}
+
+{% block titulo %}
+    Editar Cliente
+{% endblock %}
+
+{% block contenido %}
+<section class="section">
+    <div class="columns is-centered">
+        <div class="column is-half">
+            <div class="box">
+                <h3 class="is-size-3 has-text-centered">Editar Cliente</h3>
+                
+                <form method="post" action="{{ url_for('editar_cliente', cedula=cliente[1]) }}">
+                    <div class="field">
+                        <label class="label">Nombre</label>
+                        <div class="control">
+                            <input class="input" type="text" name="nombre" value="{{ cliente[2] }}" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Apellido</label>
+                        <div class="control">
+                            <input class="input" type="text" name="apellido" value="{{ cliente[3] }}" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Correo</label>
+                        <div class="control">
+                            <input class="input" type="email" name="correo" value="{{ cliente[4] }}" required>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="label">Teléfono</label>
+                        <div class="control">
+                            <input class="input" type="tel" name="telefono" value="{{ cliente[5] }}" required>
+                        </div>
+                    </div>
+                    <!-- Nuevos campos agregados -->
+                    <div class="field">
+                        <label class="label">Foto</label>
+                        <div class="control">
+                            <input class="input" type="text" name="foto" value="{{ cliente[6] }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="field">
+                        <label class="label">Tipo de Membresía</label>
+                        <div class="control">
+                            <div class="select">
+                                <select name="tipo_membresia" required>
+                                    <option value="mensual" {% if cliente[7] == 'mensual' %}selected{% endif %}>Mensual</option>
+                                    <option value="trimestral" {% if cliente[7] == 'trimestral' %}selected{% endif %}>Trimestral</option>
+                                    <option value="semestral" {% if cliente[7] == 'semestral' %}selected{% endif %}>Semestral</option>
+                                    <option value="anual" {% if cliente[7] == 'anual' %}selected{% endif %}>Anual</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Fecha de Inicio de Membresía</label>
+                        <div class="control">
+                            <input class="input" type="date" name="fecha_inicio" value="{{ cliente[6] | default('', true) }}" required>
+                        </div>
+                    </div>
+                    
+                    <!-- Fin de nuevos campos -->
+                    <div class="field is-grouped is-grouped-centered">
+                        <p class="control">
+                            <button class="button is-primary" type="submit">Guardar cambios</button>
+                        </p>
+                        <p class="control">
+                            <a class="button is-light" href="{{ url_for('mostrar_clientes') }}">Cancelar</a>
+                        </p>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

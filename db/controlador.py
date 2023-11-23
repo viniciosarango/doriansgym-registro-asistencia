@@ -51,6 +51,51 @@ def obtener_cliente_por_id(id_cliente):
 
     return None
 
+# OBTENER CLIENTE USANDO PROCEMIENTO ALMACENADO, Y ENVIANDO CEDULA COMO OARAMETRO
+
+def obtener_cliente(cedula):
+    try:
+        conexion = obtener_conexion()
+        if conexion:
+            cursor = conexion.cursor()
+            arg = [cedula]
+            cursor.callproc("obtener_cliente_cedula", arg)
+            cliente = cursor.fetchone()
+            conexion.close()
+            return cliente
+    except pymysql.Error as error:
+        print(f"Error al ejecutar la consulta: {error}")
+        return None
+
+
+# Función para actualizar un cliente por cédula
+def actualizar_cliente_cedula(cedula, nombre, apellido, correo, telefono, foto, tipo_membresia, fecha_inicio):
+    try:
+        conexion = obtener_conexion()
+        if conexion:
+            with conexion.cursor() as cursor:
+                # Llama al procedimiento almacenado
+                cursor.callproc("actualizar_cliente_cedula", [cedula, nombre, apellido, correo, telefono, foto, tipo_membresia, fecha_inicio])
+
+            # Realiza la confirmación y cierra la conexión
+            conexion.commit()
+            conexion.close()
+
+            # Imprimir en consola para verificar los valores
+            print(f"Cliente actualizado con cédula: {cedula}")
+            print(f"Nuevo nombre: {nombre}")
+            print(f"Nuevo apellido: {apellido}")
+            print(f"Nuevo correo: {correo}")
+            print(f"Nuevo teléfono: {telefono}")
+            print(f"Nueva foto: {foto}")
+            print(f"Nuevo tipo de membresía: {tipo_membresia}")
+            print(f"Nueva fecha de inicio: {fecha_inicio}")
+
+            return True
+    except pymysql.Error as error:
+        print(f"Error al ejecutar la consulta: {error}")
+        return False
+
 
 
 

@@ -35,8 +35,12 @@
                         <td>{{ cliente[5] }}</td>
                         <td>{{ cliente[6] }}</td>
                         <td>
-                        <a href="{{ url_for('registro_asistencias_diarias_cliente', id_cliente=cliente.idCliente) }}" class="button is-info">Ver Asistencias Diarias</a>
+                            <a href="{{ url_for('editar_cliente', cedula=cliente[0]) }}" class="button is-info">Editar</a>
                         </td>
+                        <td>
+                            <a href="#" class="button is-danger">Eliminar</a>
+                        </td>
+                        <td>
                     </tr>
                     {% endfor %}
                 </tbody>

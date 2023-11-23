@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for
+from db import controlador
+#from db.controlador import actualizar_cliente_cedula
+
 from db.controlador import obtenerClientes, insertarCliente, obtener_cliente_por_cedula, registrar_asistencia_cliente, obtener_asistencias_diarias_cliente, obtener_asistencias_diarias, obtener_cliente_por_id
 from flask import request
+from db.controlador import obtener_cliente, registrar_asistencia_cliente
+
+
 
 
 
@@ -104,6 +110,67 @@ def registro_asistencias_diarias_cliente(id_cliente):
 
     # Renderizar la plantilla con las asistencias diarias del cliente
     return render_template('registro_asistencias_diarias_cliente.html', asistencias_diarias_cliente=asistencias_diarias_cliente)
+
+
+
+##### LO MAS DIFICIL ##########
+
+@app.route('/editar_cliente/<string:cedula>', methods=['GET', 'POST'])
+def editar_cliente(cedula):
+    # Lógica para obtener los detalles del cliente por su cédula
+    cliente = obtener_cliente(cedula)
+
+    if request.method == 'POST':
+        # Obtener los datos del formulario de edición
+        nuevo_nombre = request.form['nombre']
+        nuevo_apellido = request.form['apellido']
+        nuevo_correo = request.form['correo']
+        nuevo_telefono = request.form['telefono']
+        nueva_foto = request.form['foto']
+        nuevo_tipo_membresia = request.form['tipo_membresia']
+        nuevo_fecha_inicio = request.form['fecha_inicio']
+
+        print(f'Datos antes de la actualización para cédula {cedula}:')
+        print(f'Cliente: {cliente}')
+
+        controlador.actualizar_cliente_cedula(cedula, nuevo_nombre, nuevo_apellido, nuevo_correo, nuevo_telefono, nueva_foto, nuevo_tipo_membresia, nuevo_fecha_inicio)
+
+        print(f'Datos después de la actualización para cédula {cedula}:')
+        #cliente_actualizado = obtener_cliente_por_cedula(cedula)
+        #print(f'Nombre: {cliente_actualizado[2]}, Apellido: {cliente_actualizado[3]}, Correo: {cliente_actualizado[4]}, Teléfono: {cliente_actualizado[5]}, Foto: {cliente_actualizado[6]}, Tipo membresía: {cliente_actualizado[7]}, Fecha Inicio: {cliente_actualizado[8]}, Fecha Fin: {cliente_actualizado[9]}')
+
+        # Redireccionar a la página de lista de clientes después de la edición
+        return redirect(url_for('mostrar_clientes'))
+
+    # Renderizar la plantilla de edición de cliente
+    return render_template('editar_cliente.html', cliente=cliente)
+
+
+
+@app.route('/actualizar_cliente', methods=['POST'])
+def actualizar_cliente():
+    if request.method == 'POST':
+        # Obtener los datos del formulario de edición
+        cedula = request.form['cedula']
+        nuevo_nombre = request.form['nombre']
+        nuevo_apellido = request.form['apellido']
+        nuevo_correo = request.form['correo']
+        nuevo_telefono = request.form['telefono']
+        nueva_foto = request.form['foto']
+        nuevo_tipo_membresia = request.form['tipo_membresia']
+        nueva_fecha_inicio = request.form['fecha_inicio']
+
+
+        # Lógica para actualizar los datos del cliente
+        # (Llama al procedimiento almacenado actualizar_cliente_cedula)
+        controlador.actualizar_cliente_cedula(cedula, nuevo_nombre, nuevo_apellido, nuevo_correo, nuevo_telefono, nueva_foto, nuevo_tipo_membresia, nueva_fecha_inicio)
+
+        # Redireccionar a la página de lista de clientes después de la edición
+        return redirect(url_for('mostrar_clientes'))
+
+
+
+
 
 
 #RUTA PARA HACER PRUEBAS
