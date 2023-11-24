@@ -28,8 +28,8 @@
                             <td>{{ asistencia[2] }}</td>
                             <td>{{ asistencia[3] }}</td>
                             <td>
-                                <form method="get" action="{{ url_for('mostrar_datos_cliente_id', idCliente=asistencia[0]) }}">
-                                    <button type="submit" class="button is-link">Ver Detalles</button>
+                                <form method="get" action="{{ url_for('registro_asistencias_diarias_cliente', id_cliente=asistencia[0]) }}">
+                                    <button type="submit" class="button is-link">Ver Asistencias</button>
                                 </form>
                             </td>
                         </tr>

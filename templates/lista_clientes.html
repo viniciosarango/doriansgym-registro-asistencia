@@ -18,8 +18,9 @@
                         <th>Apellido</th>
                         <th>Correo</th>
                         <th>Teléfono</th>                        
-                        <th>Fecha Inicio Membresía</th>
-                        <th>Fecha Fin Membresía</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
+                        <th>Ver Detalles</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -34,6 +35,9 @@
                         <td>{{ cliente[4] }}</td>                        
                         <td>{{ cliente[5] }}</td>
                         <td>{{ cliente[6] }}</td>
+                        <td>
+                            <a href="{{ url_for('mostrar_datos_cliente_cedula', cedula=cliente[0]) }}" class="button is-success">Ver Detalles</a>
+                        </td>
                         <td>
                             <a href="{{ url_for('editar_cliente', cedula=cliente[0]) }}" class="button is-info">Editar</a>
                         </td>

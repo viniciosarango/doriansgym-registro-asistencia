@@ -82,7 +82,8 @@ def mostrar_datos_cliente():
     return render_template('datos_cliente.html')
 
 
-@app.route('/mostrar_datos_cliente/<int:idCliente>')
+#@app.route('/mostrar_datos_cliente/<int:idCliente>')
+@app.route('/mostrar_datos_cliente/<int:idCliente>', methods=['GET'])
 def mostrar_datos_cliente_id(idCliente):
     
     cliente = obtener_cliente_por_id(idCliente)
@@ -91,6 +92,22 @@ def mostrar_datos_cliente_id(idCliente):
         return render_template('datos_cliente.html', cliente=cliente)
     else:
         return render_template('error.html', mensaje="Cliente no encontrado")
+
+
+@app.route('/mostrar_datos_cliente_cedula/<string:cedula>', methods=['GET'])
+def mostrar_datos_cliente_cedula(cedula):
+    cliente = obtener_cliente(cedula)
+
+    if cliente:
+        print(f"Cliente encontrado: {cliente}")
+        return render_template('datos_cliente.html', cliente=cliente)
+    else:
+        print("Cliente no encontrado")
+        return render_template('error.html', mensaje="Cliente no encontrado")
+
+
+
+
 
 
 

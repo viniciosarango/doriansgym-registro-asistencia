@@ -97,7 +97,7 @@ BEGIN
 END //
 DELIMITER ;
 
-call obtener_historial_asistencias_cliente (9);
+call obtener_historial_asistencias_cliente (8);
 
 
 

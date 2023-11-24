@@ -66,7 +66,7 @@ def obtener_cliente(cedula):
             return cliente
     except pymysql.Error as error:
         print(f"Error al ejecutar la consulta: {error}")
-        return None
+    return None
 
 
 # Función para actualizar un cliente por cédula
