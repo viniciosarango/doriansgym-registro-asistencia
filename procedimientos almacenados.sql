@@ -1,5 +1,6 @@
-DELIMITER //
 
+DROP PROCEDURE IF EXISTS obtener_cliente_cedula;
+DELIMITER //
 CREATE PROCEDURE obtener_cliente_cedula(IN in_cedula VARCHAR(15))
 BEGIN
     SELECT *
@@ -8,7 +9,22 @@ BEGIN
 END //
 DELIMITER ;
 
-CALL obtener_cliente_cedula('1103426258');
+
+-- PRODEDIMIENTO obtener_cliente_cedula variante
+DROP PROCEDURE IF EXISTS obtener_cliente_cedula;
+DELIMITER //
+CREATE PROCEDURE obtener_cliente_cedula (IN in_cedula VARCHAR(15))
+BEGIN
+    SELECT c.*, m.tipoMembresia
+    FROM Cliente c
+    LEFT JOIN membresias m ON c.idCliente = m.idCliente
+    WHERE c.cedula = in_cedula;
+END //
+DELIMITER ;
+
+CALL obtener_cliente_cedula('1104286859');
+
+
 
 DROP PROCEDURE IF EXISTS actualizar_cliente_cedula;
 DELIMITER //

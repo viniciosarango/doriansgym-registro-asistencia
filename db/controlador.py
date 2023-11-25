@@ -10,7 +10,12 @@ def obtenerClientes():
         conexion = obtener_conexion()
         if conexion is not None:
             with conexion.cursor() as cursor:
-                cursor.execute("SELECT cedula, nombre, apellido, correo, telefono, fechaInicioMembresia, fechaFinMembresia FROM Cliente")
+                #cursor.execute("SELECT cedula, nombre, apellido, correo, telefono, fechaInicioMembresia, fechaFinMembresia FROM Cliente")
+                cursor.execute("""
+                    SELECT c.cedula, c.nombre, c.apellido, c.correo, c.telefono, c.fechaInicioMembresia, c.fechaFinMembresia, m.tipoMembresia
+                    FROM Cliente c
+                    LEFT JOIN membresias m ON c.idCliente = m.idCliente
+                """)
                 clientes = cursor.fetchall()
                 conexion.close()
                 return clientes

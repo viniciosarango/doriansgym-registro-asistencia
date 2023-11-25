@@ -9,7 +9,10 @@
     <div class="columns">
         <div class="column">
             <h3 class="is-size-3">Clientes</h3>
-            
+            <!-- Agregar botón AGREGAR -->
+            <div class="has-text-right mb-2">
+                <a href="{{ url_for('agregar_cliente') }}" class="button is-primary">AGREGAR CLIENTE</a>
+            </div>
             <table class="table">
                 <thead>
                     <tr>
@@ -17,7 +20,8 @@
                         <th>Nombre</th>
                         <th>Apellido</th>
                         <th>Correo</th>
-                        <th>Teléfono</th>                        
+                        <th>Teléfono</th>
+                        <th>Tipo de Membresía</th>                        
                         <th>Fecha Inicio</th>
                         <th>Fecha Fin</th>
                         <th>Ver Detalles</th>
@@ -32,7 +36,10 @@
                         <td>{{ cliente[1] }}</td>
                         <td>{{ cliente[2] }}</td>
                         <td>{{ cliente[3] }}</td>
-                        <td>{{ cliente[4] }}</td>                        
+                        <td>{{ cliente[4] }}</td>
+                        
+                        <td>{{ cliente[7] }}</td>
+
                         <td>{{ cliente[5] }}</td>
                         <td>{{ cliente[6] }}</td>
                         <td>
