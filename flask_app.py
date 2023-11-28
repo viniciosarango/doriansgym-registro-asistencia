@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from db import controlador
 #from db.controlador import actualizar_cliente_cedula
 
-from db.controlador import obtenerClientes, insertarCliente, obtener_cliente_por_cedula, registrar_asistencia_cliente, obtener_asistencias_diarias_cliente, obtener_asistencias_diarias, obtener_cliente_por_id, eliminar_cliente_cedula
+from db.controlador import obtenerClientes, insertarCliente, obtener_cliente_por_cedula, registrar_asistencia_cliente, obtener_asistencias_diarias_cliente, obtener_asistencias_diarias, obtener_cliente_por_id
 from flask import request
 from db.controlador import obtener_cliente, registrar_asistencia_cliente
 
@@ -100,6 +100,10 @@ def mostrar_datos_cliente_cedula(cedula):
 
 
 
+
+
+
+
 @app.route('/registro_asistencias_diarias')
 def registro_asistencias_diarias():
     # Lógica para obtener el registro de asistencias diarias desde la base de datos
@@ -178,10 +182,7 @@ def actualizar_cliente():
         return redirect(url_for('mostrar_clientes'))
 
 
-@app.route("/delete", methods=["POST"])
-def eliminar_cliente_cedula():
-    controlador.eliminar_cliente_cedula(request.form["cedula"])
-    return redirect(url_for('mostrar_clientes'))
+
 
 
 

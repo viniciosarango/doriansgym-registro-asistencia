@@ -103,6 +103,23 @@ def actualizar_cliente_cedula(cedula, nombre, apellido, correo, telefono, foto, 
         return False
 
 
+def eliminar_cliente_cedula(cedula):
+    try:
+        conexion = obtener_conexion()
+        if conexion:
+            cursor = conexion.cursor()
+            arg = [cedula]
+            cursor.callproc("eliminar_cliente_cedula", arg)
+            resultado = cursor.rowcount
+            conexion.commit()
+            conexion.close()
+            return resultado    
+    except pymysql.Error as error:
+        print("Error al ejecutar a consulta: {error}")
+        return None
+
+
+
 
 
 # Función para registrar la asistencia de un cliente por su ID

@@ -10,9 +10,8 @@
         <div class="column">
             <h3 class="is-size-3">Clientes</h3>
             <!-- Agregar botón AGREGAR -->
-            <div class="has-text-right mb-2">
-                <a href="{{ url_for('agregar_cliente') }}" class="button is-primary">AGREGAR CLIENTE</a>
-            </div>
+            
+            
             <table class="table">
                 <thead>
                     <tr>
@@ -49,7 +48,10 @@
                             <a href="{{ url_for('editar_cliente', cedula=cliente[0]) }}" class="button is-info">Editar</a>
                         </td>
                         <td>
-                            <a href="#" class="button is-danger">Eliminar</a>
+                            <form method="post" action="{{ url_for('eliminar_cliente_cedula') }}" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este cliente?')">
+                                <input type="hidden" name="cedula" value="{{ cliente[0] }}">
+                                <input type="submit" value="Eliminar" class="button is-danger">
+                            </form>
                         </td>
                         <td>
                     </tr>

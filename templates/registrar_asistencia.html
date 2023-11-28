@@ -5,16 +5,24 @@
 {% endblock %}
 
 {% block contenido %}
+
+
+
 <section class="section">
-    <div class="columns">
-        <div class="column is-one-third">
-            <h3 class="is-size-3">Registrar Asistencia</h3>
-            <form action="{{ url_for('registrar_asistencia') }}" method="post">
-                <label for="cedula">Cédula:</label>
-                <input required type="text" class="input" placeholder="Cédula" name="cedula" id="cedula">
-                <button type="submit" class="button is-success mt-2">Registrar Asistencia</button>
-            </form>
-            <!-- Puedes agregar un mensaje de confirmación o error aquí -->
+    <div class="has-text-centered">
+        <h3 class="is-size-3">Registrar Asistencia</h3>
+        <br>
+    </div>
+    <div class="columns is-centered">
+        <div class="column is-half">
+            <div class="box">
+                <form action="{{ url_for('registrar_asistencia') }}" method="post">
+                    <label for="cedula">Cédula:</label>
+                    <input required type="text" class="input" placeholder="Cédula" name="cedula" id="cedula">
+                    <button type="submit" class="button is-success mt-2">Registrar Asistencia</button>
+                </form>
+                
+            </div>
         </div>
     </div>
 </section>
