@@ -1,4 +1,4 @@
-{% extends 'maestra.html' %}
+{% extends 'maestra_sin_enlaces.html' %}
 
 {% block titulo %}
     Registrar Asistencia
@@ -7,23 +7,47 @@
 {% block contenido %}
 
 
+<style>
+    body {
+        background-image: url('static/fotos/FONDO.jpg'); 
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+    }
+
+    .transparencia {
+        background-color: rgba(255, 255, 255, 0.8); /* Ajusta el último valor (0.8) para cambiar la opacidad */
+        padding: 20px; /* Ajusta el espaciado según sea necesario */
+        border-radius: 10px; /* Ajusta según sea necesario */
+    }
+</style>
+
+
+<script>
+    // Función para enfocar automáticamente la caja de texto al cargar la página
+    window.onload = function () {
+        document.getElementById('cedula').focus();
+    };
+</script>
 
 <section class="section">
     <div class="has-text-centered">
-        <h3 class="is-size-3">Registrar Asistencia</h3>
+        
         <br>
     </div>
     <div class="columns is-centered">
         <div class="column is-half">
-            <div class="box">
+            <div class="box transparencia">
+                <h3 class="is-size-3 title">Registrar Asistencia</h3>
                 <form action="{{ url_for('registrar_asistencia') }}" method="post">
-                    <label for="cedula">Cédula:</label>
-                    <input required type="text" class="input" placeholder="Cédula" name="cedula" id="cedula">
-                    <button type="submit" class="button is-success mt-2">Registrar Asistencia</button>
+                    <label for="cedula">Por favor escriba su Número de Cédula:</label>
+                    <input required type="text" class="input" placeholder="Número de Cédula" name="cedula" id="cedula">
+                    
                 </form>
                 
             </div>
         </div>
     </div>
 </section>
+
 {% endblock %}

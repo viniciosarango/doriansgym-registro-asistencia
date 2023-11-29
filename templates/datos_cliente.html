@@ -1,10 +1,26 @@
-{% extends 'maestra.html' %}
+{% extends 'maestra_sin_enlaces.html' %}
 
 {% block titulo %}
     Datos del Cliente
 {% endblock %}
 
 {% block contenido %}
+
+<style>
+    body {
+        background-image: url('static/fotos/FONDO.JPG'); /* Reemplaza 'ruta_de_tu_imagen.jpg' con la ruta correcta de tu imagen de fondo */
+        background-size: cover;
+    }
+
+    .transparencia {
+        background-color: rgba(255, 255, 255, 0.8); /* Ajusta el último valor (0.8) para cambiar la opacidad */
+        padding: 20px; /* Ajusta el espaciado según sea necesario */
+        border-radius: 10px; /* Ajusta según sea necesario */
+    }
+</style>
+
+
+
 <section class="section">
     <div class="has-text-centered">
         <h3 class="is-size-3">Datos del Cliente</h3>
@@ -12,7 +28,7 @@
     </div>
     <div class="columns is-centered">
         <div class="column is-half">
-            <div class="box">
+            <div class="box transparencia">
                 
                 <div class="columns">
                     
@@ -30,10 +46,48 @@
                         
                         <p><strong>Fecha de Inicio de Membresía:</strong> {{ cliente[7] }}</p>
                         <p><strong>Fecha de Fin de Membresía:</strong> {{ cliente[8] }}</p>
+
+                        <!-- Agregar el contador -->
+                        <p id="contador"></p>
+                        <!-- Agregar la barra de progreso -->
+                        <div class="progress">
+                            <div id="barra-progreso" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
+<script>
+    var tiempoRestante = 10; // segundos
+
+    // Función para actualizar el contador y redirigir después de 10 segundos
+    function actualizarContador() {
+        if (tiempoRestante > 0) {
+            tiempoRestante--;
+            document.getElementById('contador').innerText = tiempoRestante;
+
+            // Actualizar el progreso
+            var progreso = (10 - tiempoRestante) * 10;
+            document.getElementById('barra-progreso').style.width = progreso + '%';
+
+            // Llamar recursivamente después de 1 segundo
+            setTimeout(actualizarContador, 1000);
+        } else {
+            // Redirigir después de 10 segundos
+            window.location.href = "{{ url_for('registrar_asistencia') }}";
+        }
+    }
+
+    // Iniciar el contador al cargar la página
+    window.onload = function () {
+        actualizarContador();
+    };
+</script>
+
+
 {% endblock %}

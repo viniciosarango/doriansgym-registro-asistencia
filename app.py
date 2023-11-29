@@ -92,7 +92,7 @@ def mostrar_datos_cliente_cedula(cedula):
     cliente = obtener_cliente(cedula)
 
     if cliente:
-        print(f"Cliente encontrado: {cliente}")
+        #print(f"Cliente encontrado: {cliente}")
         return render_template('datos_cliente.html', cliente=cliente)
     else:
         print("Cliente no encontrado")
