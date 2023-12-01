@@ -7,7 +7,7 @@ def obtener_conexion():
             host="localhost",
             user="root",
             password="",
-            db="dorians_gym"  # Cambia el nombre de la base de datos según tu proyecto
+            db="dorians_gym"  
         )
         return conn
     except pymysql.Error as error:

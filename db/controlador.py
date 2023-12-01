@@ -2,7 +2,51 @@ from flask import current_app
 import pymysql
 from db.database import obtener_conexion
 import os
-from flask import render_template
+from flask import render_template, redirect, url_for, flash
+from db.forms import RegistroSuperusuarioForm, LoginForm
+from db.usuario import Usuario
+
+
+
+# Ruta para registrar un superusuario
+
+def registrar_superusuario():
+    form = RegistroSuperusuarioForm()
+
+    if form.validate_on_submit():
+        
+        if Usuario.crear_superusuario(form.username.data, form.password.data):
+            flash('Superusuario registrado exitosamente', 'success')
+            return redirect(url_for('login'))  # Redirige al inicio de sesión después del registro
+
+    return render_template('registrar_superusuario.html', form=form)
+
+
+#LOGIN DE USUARIOS
+
+
+def obtener_usuario_por_username(username):
+    try:
+        conexion = obtener_conexion()
+        if conexion is not None:
+            with conexion.cursor(pymysql.cursors.DictCursor) as cursor:
+                cursor.execute("SELECT * FROM usuario WHERE username = %s", (username,))
+                usuario_data = cursor.fetchone()
+                conexion.close()
+
+                if usuario_data:
+                    # Crear una instancia de Usuario
+                    usuario = Usuario(
+                        username=usuario_data['username'], 
+                        password=usuario_data['password'], 
+                        role=usuario_data['role'],
+                        cliente_id=usuario_data.get('cliente_id'))
+                    return usuario
+    except pymysql.Error as error:
+        print(f"Error al obtener el usuario: {error}")
+
+    return None
+
 
 
 def obtenerClientes():

@@ -1,12 +1,85 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, request, flash
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_wtf import FlaskForm
+#from db.usuario import Usuario
+from db.controlador import obtener_usuario_por_username, obtenerClientes, insertarCliente, obtener_cliente_por_cedula, registrar_asistencia_cliente, obtener_asistencias_diarias_cliente, obtener_asistencias_diarias, obtener_cliente_por_id, eliminar_cliente_cedula, obtener_cliente
 from db import controlador
-#from db.controlador import actualizar_cliente_cedula
+from flask_wtf.csrf import CSRFProtect
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
+from db.forms import RegistroSuperusuarioForm, LoginForm
+from db.usuario import Usuario
+from werkzeug.security import check_password_hash
 
-from db.controlador import obtenerClientes, insertarCliente, obtener_cliente_por_cedula, registrar_asistencia_cliente, obtener_asistencias_diarias_cliente, obtener_asistencias_diarias, obtener_cliente_por_id, eliminar_cliente_cedula
-from flask import request
-from db.controlador import obtener_cliente, registrar_asistencia_cliente
 
 app = Flask(__name__)
+
+
+app.config['SECRET_KEY'] = '8b31879689e5392cb4744f2fd09e67aa5515118b8c8629c4'
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+csrf = CSRFProtect(app)
+
+
+@login_manager.user_loader
+def load_user(username):
+    return obtener_usuario_por_username(username)
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
+
+        user = obtener_usuario_por_username(username)
+
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+
+            if user.role == 'admin':
+                return redirect(url_for('mostrar_clientes'))
+            elif user.role == 'cliente':
+                return redirect(url_for('mostrar_datos_cliente'))
+
+    return render_template('login.html', form=form)
+
+
+#REGISTRO DEL SUPERUSUARIO
+@app.route('/registrar_superusuario', methods=['GET', 'POST'])
+def registrar_superusuario():
+    form = RegistroSuperusuarioForm()
+
+    if form.validate_on_submit():
+        
+        if Usuario.crear_superusuario(form.username.data, form.password.data):
+            flash('Superusuario registrado exitosamente', 'success')
+            return redirect(url_for('login'))
+    print(form.errors)
+    return render_template('registrar_superusuario.html', form=form)
+
+
+
+
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    # Ejemplo de cómo acceder al usuario actual
+    user_info = f"Usuario actual: {current_user}"
+    return f"¡Dashboard! {user_info}"
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
+
 app.config['CARPETA_FOTOS'] = 'static/fotos'
 
 @app.route('/')
@@ -122,8 +195,6 @@ def registro_asistencias_diarias_cliente(id_cliente):
 
 
 
-##### LO MAS DIFICIL ##########
-
 @app.route('/editar_cliente/<string:cedula>', methods=['GET', 'POST'])
 def editar_cliente(cedula):
     # Lógica para obtener los detalles del cliente por su cédula
@@ -197,10 +268,6 @@ def probar_obtener_cliente_por_id(idCliente):
         return render_template('datos_cliente.html', cliente=cliente)
     else:
         return render_template('error.html', mensaje="Cliente no encontrado para el ID proporcionado")
-
-
-
-
 
 
 
